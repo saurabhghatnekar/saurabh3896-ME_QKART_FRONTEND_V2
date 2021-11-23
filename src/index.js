@@ -1,12 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom"
 import "./index.css";
 import App from "./App";
 import { SnackbarProvider } from "notistack";
+import { ThemeProvider } from '@mui/material';
+import theme from "./theme" 
 
 // DONE: CRIO_TASK_MODULE_REGISTER - Add Target container ID (refer public/index.html)
 ReactDOM.render(
   <React.StrictMode>
+    <BrowserRouter>
+    <ThemeProvider theme={theme}>
         <SnackbarProvider
           maxSnack={1}
           anchorOrigin={{
@@ -17,6 +22,8 @@ ReactDOM.render(
         >
           <App />
         </SnackbarProvider>
+      </ThemeProvider>
+      </BrowserRouter>
   </React.StrictMode>,
    document.getElementById('root')
 );
