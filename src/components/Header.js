@@ -17,8 +17,10 @@ const Header = (props) =>
     const username = localStorage.getItem("username")
 
     let headerButton = <Button></Button>;
+
     if (props.hasHiddenAuthButtons){
-      headerButton = <Button onClick={()=>{window.location.replace("/")}}
+      headerButton = <Button onClick={()=>{history.push("/", {})}}
+        name="back to explore"
         startIcon={<ArrowBackIcon />}
         variant="text"
         >
