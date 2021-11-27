@@ -62,7 +62,7 @@ const Login = () => {
       }
       else if (!response.success){
         if (response.message.includes("Password")){
-          enqueueSnackbar("login with incorrect password", {variant: "error"})
+          enqueueSnackbar("password is incorrect", {variant: "error"})
         }
         else if (response.message.includes("Username"))
         enqueueSnackbar("login with incorrect username", {variant: "error"})

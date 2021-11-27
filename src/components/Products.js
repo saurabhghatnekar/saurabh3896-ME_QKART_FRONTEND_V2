@@ -114,6 +114,10 @@ const Products = () => {
       }
     }, [searchKey])
 
+
+
+
+
   return (
     <div>
       <Header

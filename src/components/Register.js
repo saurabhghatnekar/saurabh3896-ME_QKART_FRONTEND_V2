@@ -62,7 +62,7 @@ const Register = () => {
 
       }
       else if (response.error.includes("400")){
-        enqueueSnackbar("trying to register an already registered user", {variant: "error"})
+        enqueueSnackbar("Username is already taken", {variant: "error"})
       }
     }
     catch(error){
