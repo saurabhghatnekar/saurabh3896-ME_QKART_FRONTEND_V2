@@ -13,18 +13,120 @@ import { config } from "../App";
 import Footer from "./Footer";
 import Header from "./Header";
 import "./Products.css";
-
+import ProductCard from "./ProductCard"
 
 
 const Products = () => {
   
+    const [productList, updateProductList] = useState([]);
+    const [searchKey, updateSearchKey] = useState("");
+    const [apiProgress, updateApiProgress] = useState(false)
+    const [timerId, setTimerId] = useState(null);
+
+
+    const getProductGrid = () => {
+      let productGrid = <Grid></Grid>
+        if(apiProgress){
+            return <Grid container
+            spacing={0}
+            alignItems="center"
+            justifyContent="center">
+                <CircularProgress></CircularProgress>
+                <p>Loading Products</p>
+                </Grid>
+        }
+        if(productList.length > 0){
+            
+          productGrid = productList.map(product => (
+            <Grid item xs={12} sm={6} md={3} key={product._id}>
+                <ProductCard product={product}/>
+            </Grid>
+            ))
+
+        }
+        else{
+          productGrid = <Grid container
+          spacing={0}
+          alignItems="center"
+          justifyContent="center">
+          <SentimentDissatisfied>
+          </SentimentDissatisfied>
+          <p>No products found</p>
+          </Grid>
+        }
+      return productGrid
+    }
+
+    const performAPICall = async () => {
+        updateApiProgress(true)
+        const response = await axios.get(`${config.endpoint}/products`)
+        .then(response => {
+            updateProductList(response.data)
+            updateApiProgress(false)
+            return response.data})
+        .catch(error => {
+            if(error.response.status == 404){
+                //console.log("no products");
+                updateProductList([])
+                updateApiProgress(false)
+            }
+        })
+        
+    }
+    const performSearch = async (searchKey) => {
+        updateApiProgress(true)
+        const searcheResult = await axios.get(`${config.endpoint}/products/search?value=${searchKey}`).then(response => {
+          //console.log("search", response.data)
+          updateProductList(response.data)
+          updateApiProgress(false)
+          return response.data}).catch(error => {
+          if(error.response.status == 404){
+            //console.log("no products");
+                
+                updateProductList([])
+                updateApiProgress(false)
+          }
+        })
+    }
+
+    useEffect(() => {
+        performAPICall()
+    }, [])
+
+    useEffect(()=>{
+        if(timerId){
+            clearTimeout(timerId)
+        }
+        const debounceTimerId = setTimeout(()=> performSearch(searchKey),500)
+        setTimerId(debounceTimerId)
+
+    }, [searchKey])
+
   return (
     <div>
-      <Header>
-
-      </Header>
+      <Header
+       searchBox={
+          <TextField
+          value={searchKey}
+          onChange={(event) => updateSearchKey(event.target.value)}
+          className="search-desktop"
+          size="small"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Search color="primary" />
+              </InputAdornment>
+            ),
+          }}
+          placeholder="Search for items/categories"
+          name="search"
+        />
+      }
+      />
 
       <TextField
+        value={searchKey}
+        onChange={(event) => updateSearchKey(event.target.value)}
         className="search-mobile"
         size="small"
         fullWidth
@@ -50,6 +152,7 @@ const Products = () => {
             </p>
           </Box>
         </Grid>
+        {getProductGrid()}
       </Grid>
       <Footer />
     </div>

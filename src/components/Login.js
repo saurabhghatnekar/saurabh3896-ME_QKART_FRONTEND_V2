@@ -45,13 +45,13 @@ const Login = () => {
     } 
     const {username, password} = formData
 
-    console.log("isValidInput", isValidInput)
+    //console.log("isValidInput", isValidInput)
     try {
 
       //updateApiProgress("progress")
       const response = await axios.post(`${config.endpoint}/auth/login`, {"username": username, password: password})
       .then(response => response.data).catch((error) => error.response.data);
-      console.log(response)
+      //console.log(response)
       //updateApiProgress("finished")
       if (response.success){
         enqueueSnackbar("Logged In Successfully", {variant: "success"})

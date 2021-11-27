@@ -40,14 +40,14 @@ const Register = () => {
    * }
    */
   const register = async (formData) => {
-    console.log("register", formData)
+    //console.log("register", formData)
     const isValidInput = validateInput(formData)
     if (!isValidInput) {
       return false
     }
     const {username, password, confirmPassword} = formData
 
-    console.log("isValidInput", isValidInput)
+    //console.log("isValidInput", isValidInput)
     try {
 
       //updateApiProgress("progress")
