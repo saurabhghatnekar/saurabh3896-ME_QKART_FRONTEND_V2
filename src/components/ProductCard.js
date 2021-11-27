@@ -30,7 +30,7 @@ const ProductCard = ({ product, handleAddToCart }) => {
           <Rating name="half-rating-read" defaultValue={product.rating} precision={0.5} readOnly />
         </CardContent>
        <CardActions>
-        <Button variant="contained" fullWidth>ADD TO CART</Button>
+        <Button name="add to cart" role="button" variant="contained" fullWidth>ADD TO CART</Button>
       </CardActions>
     </Card>
   );

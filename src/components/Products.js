@@ -22,7 +22,7 @@ const Products = () => {
     const [searchKey, updateSearchKey] = useState("");
     const [apiProgress, updateApiProgress] = useState(false)
     const [timerId, setTimerId] = useState(null);
-
+    const [filteredProducts, setFilteredProducts] = useState([])
 
     const getProductGrid = () => {
       let productGrid = <Grid></Grid>
@@ -35,9 +35,9 @@ const Products = () => {
                 <p>Loading Products</p>
                 </Grid>
         }
-        if(productList.length > 0){
+        if(filteredProducts.length > 0){
             
-          productGrid = productList.map(product => (
+          productGrid = filteredProducts.map(product => (
             <Grid item xs={12} sm={6} md={3} key={product._id}>
                 <ProductCard product={product}/>
             </Grid>
@@ -62,31 +62,39 @@ const Products = () => {
         const response = await axios.get(`${config.endpoint}/products`)
         .then(response => {
             updateProductList(response.data)
+            setFilteredProducts(response.data)
             updateApiProgress(false)
             return response.data})
         .catch(error => {
             if(error.response.status == 404){
                 //console.log("no products");
-                updateProductList([])
+                setFilteredProducts([])
                 updateApiProgress(false)
             }
         })
         
     }
-    const performSearch = async (searchKey) => {
-        updateApiProgress(true)
-        const searcheResult = await axios.get(`${config.endpoint}/products/search?value=${searchKey}`).then(response => {
-          //console.log("search", response.data)
-          updateProductList(response.data)
-          updateApiProgress(false)
-          return response.data}).catch(error => {
-          if(error.response.status == 404){
-            //console.log("no products");
-                
-                updateProductList([])
-                updateApiProgress(false)
-          }
-        })
+    const performSearch = async () => {
+
+          updateApiProgress(true)
+          let url = `${config.endpoint}/products/search?value=${searchKey}`
+          //console.log("searchKey", searchKey, url)
+          
+          const searcheResult = await axios.get(url)
+          .then(response => {
+            //console.log("search", response.data)
+            setFilteredProducts(response.data)
+            updateApiProgress(false)
+            return response.data})
+          .catch(error => {
+            //console.log(error)
+            if(error.response.status == 404){
+                  //qconsole.log("no products");
+                  setFilteredProducts([])
+                  updateApiProgress(false)
+            }
+          })
+        
     }
 
     useEffect(() => {
@@ -94,12 +102,16 @@ const Products = () => {
     }, [])
 
     useEffect(()=>{
+      if(!searchKey) {
+        setFilteredProducts(productList)
+      }
+      else{
         if(timerId){
             clearTimeout(timerId)
         }
-        const debounceTimerId = setTimeout(()=> performSearch(searchKey),500)
+        const debounceTimerId = setTimeout(()=> performSearch(),500)
         setTimerId(debounceTimerId)
-
+      }
     }, [searchKey])
 
   return (

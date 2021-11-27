@@ -12,7 +12,7 @@ import "./Register.css";
 
 const Register = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const [formData, updateFormData] = useState({username: "", password: ""});
+  const [formData, updateFormData] = useState({username: "", password: "", confirmPassword: ""});
   const {apiProgress, updateApiProgress} = useState("finished")
   const history = useHistory();
 
@@ -119,7 +119,7 @@ const Register = () => {
       })
         return false
       }
-      if ( password != confirmPassword){
+      if ( password !== confirmPassword){
         enqueueSnackbar("Passwords do not match", { 
           variant: 'error',
       })

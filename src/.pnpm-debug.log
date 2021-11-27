@@ -1,0 +1,35 @@
+{
+  "0 debug pnpm:scope": {
+    "selected": 1
+  },
+  "1 info pnpm": {
+    "err": {
+      "name": "Error",
+      "message": "Command failed with ENOENT: __tests__/\nspawn __tests__/ ENOENT",
+      "code": "ENOENT",
+      "stack": "Error: Command failed with ENOENT: __tests__/\nspawn __tests__/ ENOENT\n    at Process.ChildProcess._handle.onexit (internal/child_process.js:274:19)\n    at onErrorNT (internal/child_process.js:469:16)\n    at processTicksAndRejections (internal/process/task_queues.js:82:21)"
+    }
+  },
+  "2 error pnpm": {
+    "errno": -2,
+    "code": "ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL",
+    "syscall": "spawn __tests__/",
+    "path": "__tests__/",
+    "spawnargs": [],
+    "originalMessage": "spawn __tests__/ ENOENT",
+    "shortMessage": "Command failed with ENOENT: __tests__/\nspawn __tests__/ ENOENT",
+    "command": "__tests__/",
+    "escapedCommand": "\"__tests__/\"",
+    "failed": true,
+    "timedOut": false,
+    "isCanceled": false,
+    "killed": false,
+    "prefix": "/home/crio-user/workspace/saurabh3896-ME_QKART_FRONTEND_V2",
+    "err": {
+      "name": "pnpm",
+      "message": "Command failed with ENOENT: __tests__/\nspawn __tests__/ ENOENT",
+      "code": "ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL",
+      "stack": "Error: Command failed with ENOENT: __tests__/\nspawn __tests__/ ENOENT\n    at Process.ChildProcess._handle.onexit (internal/child_process.js:274:19)\n    at onErrorNT (internal/child_process.js:469:16)\n    at processTicksAndRejections (internal/process/task_queues.js:82:21)"
+    }
+  }
+}
