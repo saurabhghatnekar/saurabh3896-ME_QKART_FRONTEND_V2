@@ -145,7 +145,7 @@ export const displayCartItem = (cartItem, handleQuantity) => {
                     value={cartItem.qyt}
                 />
                 <Box padding="0.5rem" fontWeight="700">
-                    ${cartItem.cost*cartItem.qyt}
+                    ${cartItem.cost}
                 </Box>
 
             </Box>
@@ -227,5 +227,4 @@ const Cart = ({
     </>
   );
 };
-
 export default Cart;
