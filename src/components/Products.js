@@ -14,7 +14,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import "./Products.css";
 import ProductCard from "./ProductCard"
-import Cart from "./Cart";
+import Cart, { getTotalCartValue, generateCartItemsFrom } from "./Cart";
 import * as url from "url";
 
 const Products = () => {
