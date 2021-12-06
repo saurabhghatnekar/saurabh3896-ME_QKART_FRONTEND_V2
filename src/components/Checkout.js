@@ -96,10 +96,10 @@ const AddNewAddressView = ({
       <TextField
           value={newAddress.value}
           onChange={(event) => {
-            handleNewAddress(() => ({
+            handleNewAddress({
               ...newAddress,
               value: event.target.value,
-            }))
+            })
           }}
         multiline
         minRows={4}
@@ -120,6 +120,7 @@ const AddNewAddressView = ({
         >
           Add
         </Button>
+
         <Button
             onClick={() => {
 
@@ -234,7 +235,7 @@ const Checkout = () => {
         ...currAddresses,
         all: response.data,
       }));
-      console.log("addresses", addresses.all)
+
       return response.data;
     } catch {
       enqueueSnackbar(
@@ -290,6 +291,11 @@ const Checkout = () => {
         },
       })
       console.log(response.data)
+      setAddresses((currAddresses) => ({
+        ...currAddresses,
+        all: response.data,
+      }))
+
       enqueueSnackbar(
           "Address Added",
           {
@@ -350,13 +356,22 @@ const Checkout = () => {
   const deleteAddress = async (token, addressId) => {
     try {
       // TODO: CRIO_TASK_MODULE_CHECKOUT - Delete selected address from the backend and display the latest list of addresses
-      const response = await axios.delete(`${config.endpoint}/user/addresses/`+addressId,{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      console.log("deleteAddress", response.data)
 
+
+      var axiosConfig = {
+        method: 'delete',
+        url: `${config.endpoint}/user/addresses/`+addressId,
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Authorization': 'Bearer '+token
+        }
+      };
+      const response = await axios(axiosConfig)
+
+      setAddresses((currAddresses) => ({
+        ...currAddresses,
+        all: response.data,
+      }))
       enqueueSnackbar(
           "Address Deleted",
           {
@@ -367,6 +382,7 @@ const Checkout = () => {
       return response.data
 
     } catch (e) {
+      console.log(e)
       if (e.response) {
         enqueueSnackbar(e.response.data.message, { variant: "error" });
       } else {
@@ -496,9 +512,9 @@ const Checkout = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-    useEffect(()=> {
-      getAddresses(token)
-    }, [newAddress.isAddingNewAddress, addressChange])
+    // useEffect(()=> {
+    //   getAddresses(token)
+    // }, [newAddress.isAddingNewAddress])
 
 
   let viewAddress = <></>
@@ -512,7 +528,7 @@ const Checkout = () => {
   }
   else {
     viewAddress =  addresses.all.map(address => {
-      console.log("viewAddress", address.address)
+
       let currentClassName;
       if (address._id === addresses.selected._id){
         currentClassName = "address-item selected"
@@ -528,9 +544,9 @@ const Checkout = () => {
           {address.address}
         </Typography>
         <Button  onClick={() => {
-          console.log("deleting ", address._id,  address.address)
+
           deleteAddress(token, address._id)
-          updateAddressChange(addressChange+1)
+
 
         }} endIcon={<Delete />}>Delete
        </Button>
